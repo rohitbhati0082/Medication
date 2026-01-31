@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bhandari & Associates | Disclaimer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        :root {
+            --brand-red: #d32f2f;
+            --brand-red-dark: #b71c1c;
+            --brand-red-light: #fbe9e9;
+            --brand-black: #111111;
+            --brand-gray: #f6f6f6;
+        }
+
+        /* Base */
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: var(--brand-gray);
+            color: var(--brand-black);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 15px auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            border-bottom: 3px solid var(--brand-red);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+            .header img {
+                width: 300px;
+            }
+
+            .header h1 {
+                margin: 10px 0 5px;
+                color: var(--brand-red);
+            }
+
+            .header p {
+                margin: 0;
+                font-weight: 500;
+            }
+
+        /* Text */
+        .disclaimer-text {
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        /* Buttons */
+        .controls-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 35px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .center-controls {
+            text-align: center;
+            flex: 1;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.25s ease;
+        }
+
+        .btn-primary {
+            background: var(--brand-red);
+            color: #fff;
+        }
+
+            .btn-primary:hover {
+                background: var(--brand-red-dark);
+            }
+
+        .btn-secondary {
+            background: #fff;
+            color: var(--brand-red);
+            border: 1px solid var(--brand-red);
+        }
+
+            .btn-secondary:hover {
+                background: var(--brand-red-light);
+            }
+
+        /* Advisor Overlay */
+        .advisor-overlay {
+            position: fixed;
+            inset: 0;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            pointer-events: none;
+        }
+
+        .advisor-wrapper {
+            animation: advisorEnter 0.4s ease-out forwards;
+        }
+
+        @keyframes advisorEnter {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes advisorExit {
+            from {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+        }
+
+        /* Advisor Robot */
+       
+
+        .advisor-eye {
+            width: 10px;
+            height: 10px;
+            background: #ffffff;
+            border-radius: 50%;
+            position: absolute;
+            top: 48px;
+            box-shadow: 0 0 8px rgba(255,255,255,0.8);
+        }
+
+            .advisor-eye.left {
+                left: 38px;
+            }
+
+            .advisor-eye.right {
+                right: 38px;
+            }
+
+        .advisor-mouth {
+            width: 26px;
+            height: 4px;
+            background: #ffffff;
+            border-radius: 2px;
+            position: absolute;
+            bottom: 42px;
+            .advisor-face
+
+        {
+            width: 90px;
+            height: 115px;
+            background: linear-gradient(135deg, #e3e7ee, #cfd6e3);
+            border-radius: 50px 50px 45px 45px;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+        }
+
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Speaking Animation */
+        .speaking {
+            animation: advisorNod 1.6s infinite ease-in-out;
+        }
+
+            .speaking .advisor-mouth {
+                animation: advisorSpeak 0.35s infinite;
+            }
+
+        @keyframes advisorSpeak {
+            0% {
+                height: 4px;
+            }
+
+            50% {
+                height: 10px;
+            }
+
+            100% {
+                height: 4px;
+            }
+        }
+
+        @keyframes advisorNod {
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(2px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 30px;
+            width: 90%;
+            max-width: 420px;
+            border-radius: 6px;
+            border-top: 5px solid var(--brand-red);
+        }
+
+            .modal-content h3 {
+                color: var(--brand-red);
+            }
+
+            .modal-content input {
+                width: 100%;
+                padding: 12px;
+                margin-bottom: 15px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+
+        .close {
+            text-align: right;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .controls-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header">
+            <img src="images/logol.png" alt="Bhandari & Associates">
+            <h1>Disclaimer</h1>
+            <p>Mediators & Legal Consultants</p>
+        </div>
+
+        <div class="disclaimer-text" id="disclaimerContent">
+            <p>
+                This is to notify the reader that this firm profile does not promise legal advice, advertisement, solicitation or invitation and should not be depended upon for the same without prior agreement between the firm and the reader. This website comprises of generic information about B & A Mediation Services for the benefit of our esteemed clients.
+            </p>
+            <p>
+                B & A Mediation Services hereby declares that it is not responsible for the consequences of any action, which are a direct or indirect result of utilizing the information available on this website or are dependent upon the same, by any person. Additionally, any case/instance of use, receipt or conveyance of this information in any way related to, or based upon, the contents of this website and/or any communication thereof, not creating a contract or an agreement for mediation between the firm and the party/parties concerned, does not in any way create an attorney client relationship. Any information so transmitted would not be included under the attorney-client privileged information. Unauthorized and illegal copying or usage of the contents of this website for distribution, promotion, solicitation or inquiry purposes is strictly prohibited and shall be treated as against the terms and conditions of use. Such an action will lead to legal consequences against the violator(s) and accomplices, if any, may the action by the same be direct or indirect.
+            </p>
+        </div>
+
+        <div class="controls-row">
+            <button class="btn btn-primary" onclick="visitWebsite()">Visit Website</button>
+
+            <div class="center-controls">
+                <button class="btn btn-primary" onclick="playVoice()">Listen Disclaimer</button>
+                <button class="btn btn-secondary" onclick="stopVoice()">Stop</button>
+            </div>
+
+            <button class="btn btn-secondary" onclick="openModal()">Later</button>
+        </div>
+    </div>
+
+    <!-- Advisor -->
+    <div class="advisor-overlay" id="advisorOverlay">
+        <div class="advisor-wrapper" id="advisorWrapper">
+            <div class="advisor-face" id="advisorFace">
+                <div class="advisor-eye left"></div>
+                <div class="advisor-eye right"></div>
+                <div class="advisor-mouth"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="contactModal">
+        <div class="modal-content">
+            <div class="close" onclick="closeModal()">X</div>
+            <h3>We will connect with you</h3>
+            <input type="text" placeholder="Full Name">
+            <input type="email" placeholder="Email Address">
+            <input type="tel" placeholder="Phone Number">
+            <button class="btn btn-primary" style="width:100%;">Submit</button>
+        </div>
+    </div>
+
+    <script>
+        let speech;
+        const overlay = document.getElementById("advisorOverlay");
+        const wrapper = document.getElementById("advisorWrapper");
+        const face = document.getElementById("advisorFace");
+
+        function showAdvisor() {
+            overlay.style.display = "flex";
+            face.classList.add("speaking");
+        }
+
+        function hideAdvisor() {
+            wrapper.style.animation = "advisorExit 0.4s ease-in forwards";
+            setTimeout(() => {
+                overlay.style.display = "none";
+                face.classList.remove("speaking");
+            }, 350);
+        }
+
+        function playVoice() {
+            window.speechSynthesis.cancel();
+            showAdvisor();
+
+            speech = new SpeechSynthesisUtterance(
+                document.getElementById("disclaimerContent").innerText
+            );
+            speech.rate = 0.9;
+            speech.lang = "en-US";
+            speech.onend = hideAdvisor;
+
+            window.speechSynthesis.speak(speech);
+        }
+
+        function stopVoice() {
+            window.speechSynthesis.cancel();
+            showAdvisor();
+
+            const closing = new SpeechSynthesisUtterance(
+                "Thanks for your time."
+            );
+            closing.rate = 0.9;
+            closing.lang = "en-US";
+
+            closing.onend = hideAdvisor;
+            window.speechSynthesis.speak(closing);
+        }
+
+        function visitWebsite() {
+            window.location.href = "https://www.meetsolution.com";
+        }
+
+        function openModal() {
+            document.getElementById("contactModal").style.display = "flex";
+        }
+
+        function closeModal() {
+            document.getElementById("contactModal").style.display = "none";
+        }
+    </script>
+
+</body>
+</html>

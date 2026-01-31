@@ -1,0 +1,294 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+       <meta charset="utf-8">
+<title>Bhandari & Associates</title>
+
+<link rel="shortcut icon" href="images/favicon.jpg" type="image/x-icon">
+<link rel="icon" href="images/favicon.jpg" type="image/x-icon">
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css?family=Prata|Rubik:300,400,500,700&amp;display=swap" rel="stylesheet">
+
+<!-- Stylesheets -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/jquery-ui.css" rel="stylesheet">
+<link href="css/swiper.min.css" rel="stylesheet">
+<link href="css/flaticon.css" rel="stylesheet">
+<link href="css/font-awesome.css" rel="stylesheet">
+<link href="css/animate.css" rel="stylesheet">
+<link href="css/custom-animate.css" rel="stylesheet">
+<link href="css/jquery.fancybox.min.css" rel="stylesheet">
+<link href="css/owl.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+<link href="css/responsive.css" rel="stylesheet">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<!-- Responsive -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script><![endif]-->
+<!--[if lt IE 9]><script src="js/respond.js"></script><![endif]-->
+    <style>
+        .responsive-list {
+            padding-left: 20px;
+            margin: 0;
+            list-style-type: disc;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+            .responsive-list li {
+                margin-bottom: 8px;
+            }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .responsive-list {
+                font-size: 14px;
+                padding-left: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <form id="form1" runat="server">
+<div class="page-wrapper">
+    <!-- Preloader -->
+    <div class="loader-wrap">
+        <div class="preloader"></div>
+        <div class="layer layer-one"><span class="overlay"></span></div>
+        <div class="layer layer-two"><span class="overlay"></span></div>        
+        <div class="layer layer-three"><span class="overlay"></span></div>        
+    </div>
+    
+    <!-- Main Header-->
+    <header class="main-header">
+        <!-- Top bar -->
+        <div class="top-bar theme-bg">
+            <div class="auto-container">
+                <div class="wrapper-box">
+                    <div class="left-content">
+                        
+                        <div class="text">B&A provides Mediation and Conciliation Services...</div>
+                    </div>
+                    <div class="right-content">
+                        <ul class="contact-info">
+                          
+                            <li><span class="flaticon-phone"></span><a href="tel:+91 (011) 417480711">+91 (011) 417480711</a></li>
+                        </ul>
+                        <ul class="social-icon-one">
+                            <li><a href="#"><span class="fa fa-facebook"></span></a></li>
+                            <li><a href="#"><span class="fa fa-twitter"></span></a></li>
+                            <li><a href="#"><span class="fa fa-youtube"></span></a></li>
+                             <li><a href="#"><span class="fa fa-linkedin"></span></a></li>
+                        </ul>
+                    </div>
+                </div>                
+            </div>
+        </div>
+
+        <!-- Header Upper -->
+        <div class="header-upper">
+            <div class="auto-container">
+                <div class="wrapper-box">
+                    <div class="logo-column">
+                        <div class="logo-box">
+                            <div class="logo"><a href="Home.aspx"><img src="images/logol.png" style="width:200px;" alt="" title=""></a></div>
+                        </div>
+                    </div>
+                    <div class="right-column">
+                        <div class="option-wrapper">
+                            <div class="nav-outer">
+                                
+                                <!-- Main Menu -->
+                                <nav class="main-menu navbar-expand-xl navbar-dark">
+                                    
+                                    <div class="collapse navbar-collapse">
+                                        <ul class="navigation">
+                                            <li><a href="Home.aspx">Home</a>
+                                            
+                                            </li>
+                                            <li><a href="services.aspx">Services</a>
+                                               
+                                            </li>
+                                            <li><a href="probonoservices.aspx">Pro Bono Services</a>
+                                             
+                                            </li>
+                                             <li><a href="Team.aspx">Our Team</a></li>
+                                            <li class="dropdown"><a href="#">Events</a>
+                                                <ul>
+                                                      <li><a href="International.aspx">International</a></li>
+                                                      <li><a href="National.aspx">National</a></li>
+                                                    <li><a href="Gallary.aspx">Photo Gallery</a></li>
+                                                    <li><a href="Video.aspx">Video Gallery</a></li>
+                                                     <li><a href="Certification.aspx">Certifications/PDF</a></li>
+                                                </ul>
+                                            </li>
+                                           
+                                            <li><a href="Testimonial.aspx">Testimonial</a></li>
+                                             <li><a href="Contact.aspx">Get in Touch</a></li>
+                                        </ul>
+                                    </div>
+                                </nav><!-- Main Menu End-->
+                            </div>
+                            <!--Search Box-->
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End Header Upper-->
+
+        <!--End Header Upper-->
+        <div class="sticky-header">
+            <div class="auto-container">
+                <div class="wrapper-box">
+                    <div class="logo-column">
+                        <div class="logo-box">
+                            <div class="logo"><a href="index-2.html"><img src="images/logol.png" style="width:200px;" alt="" title=""></a></div>
+                        </div>
+                    </div>
+                    <div class="menu-column">
+                        <div class="nav-outer">
+                            
+                            <div class="nav-inner">
+
+                                <!-- Main Menu -->
+                                <nav class="main-menu navbar-expand-xl navbar-dark">
+                                    
+                                    <div class="collapse navbar-collapse">
+                                        <ul class="navigation">
+                                        </ul>
+                                    </div>
+                                </nav><!-- Main Menu End-->
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu  -->
+        <div class="mobile-menu style-one">
+            <div class="menu-box">
+                <div class="logo"><a href="index-2.html"><img src="images/logol.png" style="width:150px;" alt=""></a></div>
+                <!-- Main Menu -->
+                <nav class="main-menu navbar-expand-xl navbar-dark">
+                    <div class="navbar-header">
+                        <!-- Toggle Button -->      
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="flaticon-menu"></span>
+                        </button>
+                    </div>
+                    
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navigation">
+                            
+                        </ul>
+                    </div>
+                </nav>
+                <!-- Main Menu End-->
+                <!--Search Box-->
+                
+            </div>     
+                
+        </div>
+        <!-- End Mobile Menu -->
+
+        <div class="nav-overlay">
+            <div class="cursor"></div>
+            <div class="cursor-follower"></div>
+        </div>
+    </header>
+        <!-- Navbar & Hero End -->
+        <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+        
+        </asp:ContentPlaceHolder>
+
+        <footer class="main-footer">
+        <div class="auto-container">
+            <div class="widget-wrapper">
+                <div class="row">
+                    <!-- Contact Widget -->
+                    <div class="col-lg-12 col-md-12 contact-widget footer-widget" style="text-align:center;">
+                        <h4 class="widget-title">Get in Touch..</h4>
+                          <p style="color:white;">
+    <strong>Delhi Office:</strong> B-37, Soami Nagar, New Delhi-110017 |
+    <strong>Phone:</strong> +91 (011) 417480711 |
+    <strong>Email:</strong>
+    <a href="mailto:info@mediationservices.in">info@mediationservices.in</a>
+  </p>
+
+  <p style="color:white;">
+    <strong>Chandigarh Office:</strong> House No. 584, Sector 18B, Chandigarh |
+    <strong>Phone:</strong> +91 (172) 2781111
+  </p>
+
+  <p style="color:white;">
+    <strong>Branch Office:</strong> House No. 336, Mansa Devi Complex (MDC),
+    Panchkula, Haryana
+  </p>               
+                    </div>
+                    <!-- About Widget -->
+                   
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="left-content">
+                    <div class="copyright-text"><a href="#">Bhandai & Associates.</a> <br>Designed By <a href="https://meetsolution.com/" target="_blank">Meet Solution.</a></div>
+                </div>
+                <div class="right-content">
+                    <ul class="social-icon-three">
+                        <li><a href="#"><span class="fa fa-facebook"></span></a></li>
+                        <li><a href="#"><span class="fa fa-twitter"></span></a></li>
+                        <li><a href="#"><span class="fa fa-youtube"></span></a></li>
+                        <li><a href="#"><span class="fa fa-linkedin"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!--Scroll to top-->
+    <div class="scroll-to-top scroll-to-target" data-target="html"><span class="icon flaticon-arrow"></span></div>
+
+    <div id="donate-popup" class="donate-popup">
+        
+        <div class="popup-overlay"></div>
+
+        
+    </div>
+
+</div>
+<!--End pagewrapper-->
+        </form>
+
+
+<!-- JS -->
+<script src="js/jquery.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/TweenMax.min.js"></script>
+<script src="js/wow.js"></script>
+<script src="js/owl.js"></script>
+<script src="js/appear.js"></script>
+<script src="js/swiper.min.js"></script>
+<script src="js/jquery.fancybox.js"></script>
+<script src="js/menu-nav-btn.js"></script>
+    <script src="js/isotope.js"></script>
+<script src="js/jquery-ui.js"></script>
+<!-- Custom JS -->
+<script src="js/script.js"></script>
+
+
+
+</body>
+        
+
+</html>
