@@ -10,40 +10,26 @@
  </section>
 
  <!-- Bnner Section -->
- <section class="banner-section">
-     <div class="swiper-container banner-slider">
-         <div class="swiper-wrapper">
-             <!-- Slide Item -->
-             <div class="swiper-slide" style="background-image: url(images/bg1.png);">
-                 <div class="content-outer">
-                     <div class="content-box justify-content-center">
-                         <div class="inner text-center">
-                            </div>
-                     </div>
-                 </div>
-             </div>
+<!-- Bnner Section -->
+<section class="banner-section">
+    <div class="swiper-container banner-slider">
+        <div class="swiper-wrapper" id="homeSliderWrapper">
+            <!-- Dynamic sliders load here -->
+        </div>
 
-             <!-- Slide Item -->
-             <div class="swiper-slide" style="background-image: url(images/bg2.jpg);">
-                 <div class="content-outer">
-                     <div class="content-box justify-content-center">
-                         <div class="inner text-center">
-                           
-                                </div>
-                     </div>
-                 </div>
-             </div>
+        <div class="banner-slider-pagination style-two"></div>
+        <div class="banner-slider-nav style-one">
+            <div class="banner-slider-control banner-slider-button-prev">
+                <span class="fa fa-angle-left"></span>
+            </div>
+            <div class="banner-slider-control banner-slider-button-next">
+                <span class="fa fa-angle-right"></span>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Section -->
 
-             <!-- Slide Item -->
-             
-         </div>
-         <div class="banner-slider-pagination style-two"></div>
-         <div class="banner-slider-nav style-one">
-             <div class="banner-slider-control banner-slider-button-prev"><span class="fa fa-angle-left"></span></div>
-             <div class="banner-slider-control banner-slider-button-next"><span class="fa fa-angle-right"></span> </div>
-         </div>
-     </div>
- </section>
  <!-- End Bnner Section -->
     <section class="volunteer-section-two" style="background-image: url(images/background/bg-7.jpg); height:400px;">
     <div class="auto-container">
@@ -206,45 +192,20 @@ The main advantages which possibly arise out of such mediation are confidentiali
  
 
  <!-- Testimonial Section Four -->
- <section class="testimonial-section-four">
-     <div class="auto-container">
-         <div class="sec-title text-center">
-             <h1>What people says about us</h1>
-         </div>
-         <div class="row">
-             <div class="three-item-carousel owl-theme owl-carousel owl-nav-none owl-dot-style-one">
-                 <div class="event-block-one">
-                     <div class="inner-box">
-                        
-                         <h4>Appreciation for Successful Mediation Efforts</h4>
-                         <div class="text">Ms. Varuna Bhandari Gugnani was appointed as mediator in TP (Civil) 15751 of 2012 between my son Tushar Agarwal and Swikrati Singh Agarwal. We have no words to appreciate her patience to bear all the pressure brought on her by both sides when we lost hope for settlement she persuaded both the parties and today her efforts have yielded the desired results. Thanx a ton Madam Varuna. Pramod Agarwal.</div>
-                         <div class="author-title">Pramod Kumar</div>
-                         <div class="designation">Chief Commissioner of Income Tax (retd) Bangalore</div>
-                     </div>
-                 </div>
-                 <div class="event-block-one">
-                     <div class="inner-box">
-                        
-                         <h4>Words of Gratitude</h4>
-                         <div class="text">The process of mediation is a healthy, healing. Our mediator Mrs. Varuna Bhandari has helped us tremendously and given us patience hearing and guidance. I give her a deep sence of gratitude. I thank you for the help and support you have given me and my son. God Bless you.</div>
-                         <div class="author-title">Punkaj Kapoor
-</div>
-                         <div class="designation">Kanpur</div>
-                     </div>
-                 </div>
-                 <div class="event-block-one">
-                     <div class="inner-box">
-                         <h4>A Transformative Mediation Experience</h4>
-                         <div class="text">First for me convey my great thanks to Ms. Varuna Bhandari for providing wonderful opportunity to talk to my wife, which never was done so far. Every time I used to make an opportunity to meet her in the court hall, but the mediation centre is the place where I could meet and talk to her ambiance of the mediation centre, cordial staff and the efforts of Ms. Varuna Bhandari was like a miracle, which really changed the way I made the decision. Thanks and very fond to the mediation.</div>
-                         <div class="author-title">Dr. Somsekhar Nir
-</div>
-                         <div class="designation">Chaneballugur , Lamatann</div>
-                     </div>
-                 </div>
-             </div>
-         </div>
-     </div>
- </section>
+<section class="testimonial-section-four">
+    <div class="auto-container">
+        <div class="sec-title text-center">
+            <h1>What people says about us</h1>
+        </div>
+        <div class="row">
+            <div id="testimonialCarousel"
+                 class="three-item-carousel owl-theme owl-carousel owl-nav-none owl-dot-style-one">
+                <!-- Dynamic testimonials load here -->
+            </div>
+        </div>
+    </div>
+</section>
+
 
  <!-- Team Section -->
  <section class="team-section">
@@ -402,6 +363,102 @@ ValidationExpression="[0-9]{10}"></asp:RegularExpressionValidator>
  
 
  <!-- Client section -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(function () {
+        loadHomeSliders();
+        loadTestimonials();
+    });
+
+    function loadHomeSliders() {
+        $.ajax({
+            type: "POST",
+            url: "Services/SliderService.asmx/GetSliders",
+            contentType: "application/json",
+            success: function (res) {
+                var api = JSON.parse(res.d);
+                if (!api.success || !api.data.length) return;
+
+                let html = "";
+                api.data.forEach(s => {
+                    html += `<div class="swiper-slide" style="background-image:url('${s.imagePath}')">
+                            <div class="content-outer">
+                                <div class="content-box justify-content-center">
+                                    <div class="inner text-center"></div>
+                                </div>
+                            </div>
+                        </div>`;
+                });
+
+                $("#homeSliderWrapper").html(html);
+                initHomeSwiper();
+            }
+        });
+    }
+
+    function initHomeSwiper() {
+        if (window.homeSwiper) window.homeSwiper.destroy(true, true);
+
+        window.homeSwiper = new Swiper('.banner-slider', {
+            loop: true,
+            autoplay: { delay: 4000, disableOnInteraction: false },
+            pagination: { el: '.banner-slider-pagination', clickable: true },
+            navigation: { nextEl: '.banner-slider-button-next', prevEl: '.banner-slider-button-prev' }
+        });
+    }
+
+    function loadTestimonials() {
+        $.ajax({
+            type: "POST",
+            url: "Services/TestimonialService.asmx/GetTestimonials",
+            contentType: "application/json",
+            success: function (res) {
+                var api = JSON.parse(res.d);
+                if (!api.success || !api.data.length) return;
+
+                let html = "";
+                api.data.forEach(t => {
+                    html += `<div class="event-block-one">
+                            <div class="inner-box">
+                                <h4>${escapeHtml(t.title)}</h4>
+                                <div class="text">${t.message}</div>
+                                <div class="author-title">${escapeHtml(t.authorName)}</div>
+                                <div class="designation">${escapeHtml(t.designation)}</div>
+                            </div>
+                        </div>`;
+                });
+
+                $("#testimonialCarousel").html(html);
+                initTestimonialCarousel();
+            }
+        });
+    }
+
+    function initTestimonialCarousel() {
+        if ($('#testimonialCarousel').hasClass('owl-loaded')) {
+            $('#testimonialCarousel').trigger('destroy.owl.carousel').removeClass('owl-loaded');
+            $('#testimonialCarousel').find('.owl-stage-outer').children().unwrap();
+        }
+
+        $('#testimonialCarousel').owlCarousel({
+            loop: true,
+            margin: 30,
+            nav: false,
+            dots: true,
+            autoplay: true,
+            autoplayTimeout: 5000,
+            responsive: { 0: { items: 1 }, 768: { items: 2 }, 1200: { items: 3 } }
+        });
+    }
+
+    function escapeHtml(text) {
+        if (!text) return "";
+        return text.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+    }
+</script>
+
+
  
 </asp:Content>
 

@@ -22,45 +22,22 @@
 
  <!-- Bnner Section -->
  
- <!-- End Bnner Section --> <section class="testimonial-section-four">
-     <div class="auto-container">
-         <div class="sec-title text-center">
-             <h1>What people says about us</h1>
-         </div>
-         <div class="row">
-             <div class="three-item-carousel owl-theme owl-carousel owl-nav-none owl-dot-style-one">
-                 <div class="event-block-one">
-                     <div class="inner-box">
-                        
-                         <h4>Appreciation for Successful Mediation Efforts</h4>
-                         <div class="text">Ms. Varuna Bhandari Gugnani was appointed as mediator in TP (Civil) 15751 of 2012 between my son Tushar Agarwal and Swikrati Singh Agarwal. We have no words to appreciate her patience to bear all the pressure brought on her by both sides when we lost hope for settlement she persuaded both the parties and today her efforts have yielded the desired results. Thanx a ton Madam Varuna. Pramod Agarwal.</div>
-                         <div class="author-title">Pramod Kumar</div>
-                         <div class="designation">Chief Commissioner of Income Tax (retd) Bangalore</div>
-                     </div>
-                 </div>
-                 <div class="event-block-one">
-                     <div class="inner-box">
-                        
-                         <h4>Words of Gratitude</h4>
-                         <div class="text">The process of mediation is a healthy, healing. Our mediator Mrs. Varuna Bhandari has helped us tremendously and given us patience hearing and guidance. I give her a deep sence of gratitude. I thank you for the help and support you have given me and my son. God Bless you.</div>
-                         <div class="author-title">Punkaj Kapoor
-</div>
-                         <div class="designation">Kanpur</div>
-                     </div>
-                 </div>
-                 <div class="event-block-one">
-                     <div class="inner-box">
-                         <h4>A Transformative Mediation Experience</h4>
-                         <div class="text">First for me convey my great thanks to Ms. Varuna Bhandari for providing wonderful opportunity to talk to my wife, which never was done so far. Every time I used to make an opportunity to meet her in the court hall, but the mediation centre is the place where I could meet and talk to her ambiance of the mediation centre, cordial staff and the efforts of Ms. Varuna Bhandari was like a miracle, which really changed the way I made the decision. Thanks and very fond to the mediation.</div>
-                         <div class="author-title">Dr. Somsekhar Nir
-</div>
-                         <div class="designation">Chaneballugur , Lamatann</div>
-                     </div>
-                 </div>
-             </div>
-         </div>
-     </div>
- </section>
+ <!-- End Bnner Section -->
+    <section class="testimonial-section-four">
+    <div class="auto-container">
+        <div class="sec-title text-center">
+            <h1>What people says about us</h1>
+        </div>
+
+        <div class="row">
+            <div id="testimonialCarousel"
+                 class="three-item-carousel owl-theme owl-carousel owl-nav-none owl-dot-style-one">
+                <!-- JS will inject testimonials here -->
+            </div>
+        </div>
+    </div>
+</section>
+
      
         
 
@@ -182,6 +159,83 @@ ValidationExpression="[0-9]{10}"></asp:RegularExpressionValidator>
  
 
  <!-- Client section -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        loadTestimonials();
+    });
+
+    function loadTestimonials() {
+        $.ajax({
+            type: "POST",
+            url: "Services/TestimonialService.asmx/GetTestimonials",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (res) {
+
+                const api = JSON.parse(res.d);
+                if (!api.success || !api.data) return;
+
+                let html = "";
+
+                api.data.forEach(t => {
+                    html += `
+                    <div class="event-block-one">
+                        <div class="inner-box">
+
+                            <h4>${escapeHtml(t.title)}</h4>
+
+                            <div class="text">
+                                ${t.message}
+                            </div>
+
+                            <div class="author-title">
+                                ${escapeHtml(t.authorName)}
+                            </div>
+
+                            <div class="designation">
+                                ${escapeHtml(t.designation || "")}
+                            </div>
+
+                        </div>
+                    </div>`;
+                });
+
+                const $carousel = $("#testimonialCarousel");
+
+                // destroy if already initialized
+                if ($carousel.hasClass("owl-loaded")) {
+                    $carousel.trigger("destroy.owl.carousel");
+                    $carousel.removeClass("owl-loaded");
+                    $carousel.find(".owl-stage-outer").children().unwrap();
+                }
+
+                $carousel.html(html);
+
+                // re-init carousel
+                $carousel.owlCarousel({
+                    loop: true,
+                    margin: 30,
+                    nav: false,
+                    dots: true,
+                    autoplay: true,
+                    autoplayTimeout: 6000,
+                    responsive: {
+                        0: { items: 1 },
+                        768: { items: 2 },
+                        1200: { items: 3 }
+                    }
+                });
+            }
+        });
+    }
+
+    function escapeHtml(text) {
+        return $('<div>').text(text || '').html();
+    }
+</script>
+
  
 </asp:Content>
 
