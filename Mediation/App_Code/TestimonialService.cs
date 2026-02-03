@@ -10,11 +10,36 @@ using System.Web.Services;
 [ScriptService]
 public class TestimonialService : WebService
 {
-    string connStr = ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
-    ObjectCache cache = MemoryCache.Default;
-    const string CACHE_KEY = "TESTIMONIAL_LIST";
+    private string connStr =
+        ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
 
-    // ================= GET (CACHED) =================
+    private ObjectCache cache = MemoryCache.Default;
+    private const string CACHE_KEY = "TESTIMONIAL_LIST";
+
+    /* ===================== HELPERS ===================== */
+
+    private string Ok(object data)
+    {
+        return JsonHelper.ToJson(ApiResponse<object>.Ok(data));
+    }
+
+    private string Ok(object data, string msg)
+    {
+        return JsonHelper.ToJson(ApiResponse<object>.Ok(data, msg));
+    }
+
+    private string Fail(string msg)
+    {
+        return JsonHelper.ToJson(ApiResponse<object>.Fail(msg));
+    }
+
+    private void ClearCache()
+    {
+        cache.Remove(CACHE_KEY);
+    }
+
+    /* ===================== GET ===================== */
+
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public string GetTestimonials()
@@ -25,34 +50,37 @@ public class TestimonialService : WebService
         var list = new List<object>();
 
         using (SqlConnection con = new SqlConnection(connStr))
-        using (SqlCommand cmd = new SqlCommand(
-            @"SELECT * FROM CMS_Testimonials 
-              WHERE IsActive = 1 
-              ORDER BY 1 desc", con))
+        using (SqlCommand cmd = new SqlCommand(@"
+            SELECT TestimonialId, Title, Message, AuthorName, Designation
+            FROM CMS_Testimonials
+            WHERE IsActive=1
+            ORDER BY DisplayOrder DESC", con))
         {
             con.Open();
-            var dr = cmd.ExecuteReader();
-            while (dr.Read())
+            using (SqlDataReader dr = cmd.ExecuteReader())
             {
-                list.Add(new
+                while (dr.Read())
                 {
-                    TestimonialId = dr["TestimonialId"],
-                    Title = dr["Title"],
-                    Message = dr["Message"],
-                    AuthorName = dr["AuthorName"],
-                    Designation = dr["Designation"]
-                });
+                    list.Add(new
+                    {
+                        TestimonialId = dr["TestimonialId"],
+                        Title = dr["Title"],
+                        Message = dr["Message"],
+                        AuthorName = dr["AuthorName"],
+                        Designation = dr["Designation"]
+                    });
+                }
             }
         }
 
-        string json = JsonHelper.ToJson(ApiResponse<object>.Ok(list));
+        string json = Ok(list);
         cache.Set(CACHE_KEY, json, DateTimeOffset.Now.AddMinutes(30));
         return json;
     }
 
-    // ================= ADD / UPDATE =================
+    /* ===================== SAVE ===================== */
+
     [WebMethod]
-    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public string SaveTestimonial(
         int testimonialId,
         string title,
@@ -60,72 +88,95 @@ public class TestimonialService : WebService
         string authorName,
         string designation)
     {
-        using (SqlConnection con = new SqlConnection(connStr))
+        try
         {
-            con.Open();
-
-            SqlCommand cmd;
-            if (testimonialId == 0)
+            using (SqlConnection con = new SqlConnection(connStr))
+            using (SqlCommand cmd = new SqlCommand())
             {
-                cmd = new SqlCommand(
-                    @"INSERT INTO CMS_Testimonials
-                      (Title, Message, AuthorName, Designation)
-                      VALUES (@T,@M,@A,@D)", con);
-            }
-            else
-            {
-                cmd = new SqlCommand(
-                    @"UPDATE CMS_Testimonials SET
-                      Title=@T, Message=@M, AuthorName=@A, Designation=@D
-                      WHERE TestimonialId=@ID", con);
-                cmd.Parameters.AddWithValue("@ID", testimonialId);
+                cmd.Connection = con;
+
+                if (testimonialId == 0)
+                {
+                    cmd.CommandText = @"
+                        INSERT INTO CMS_Testimonials
+                        (Title, Message, AuthorName, Designation)
+                        VALUES (@T,@M,@A,@D)";
+                }
+                else
+                {
+                    cmd.CommandText = @"
+                        UPDATE CMS_Testimonials SET
+                        Title=@T, Message=@M, AuthorName=@A, Designation=@D
+                        WHERE TestimonialId=@Id";
+                    cmd.Parameters.AddWithValue("@Id", testimonialId);
+                }
+
+                cmd.Parameters.AddWithValue("@T", title);
+                cmd.Parameters.AddWithValue("@M", message);
+                cmd.Parameters.AddWithValue("@A", authorName);
+                cmd.Parameters.AddWithValue("@D", designation);
+
+                con.Open();
+                cmd.ExecuteNonQuery();
             }
 
-            cmd.Parameters.AddWithValue("@T", title);
-            cmd.Parameters.AddWithValue("@M", message);
-            cmd.Parameters.AddWithValue("@A", authorName);
-            cmd.Parameters.AddWithValue("@D", designation);
-            cmd.ExecuteNonQuery();
+            ClearCache();
+            return Ok(null, "Saved successfully");
         }
-
-        cache.Remove(CACHE_KEY);
-        return JsonHelper.ToJson(ApiResponse<object>.Ok(null, "Saved successfully"));
+        catch (Exception ex)
+        {
+            return Fail(ex.Message);
+        }
     }
 
-    // ================= DELETE =================
+    /* ===================== DELETE ===================== */
+
     [WebMethod]
-    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public string DeleteTestimonial(int testimonialId)
     {
-        using (SqlConnection con = new SqlConnection(connStr))
-        using (SqlCommand cmd = new SqlCommand(
-            "DELETE FROM CMS_Testimonials WHERE TestimonialId=@ID", con))
+        try
         {
-            cmd.Parameters.AddWithValue("@ID", testimonialId);
-            con.Open();
-            cmd.ExecuteNonQuery();
-        }
+            using (SqlConnection con = new SqlConnection(connStr))
+            using (SqlCommand cmd = new SqlCommand(
+                "DELETE FROM CMS_Testimonials WHERE TestimonialId=@Id", con))
+            {
+                cmd.Parameters.AddWithValue("@Id", testimonialId);
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
 
-        cache.Remove(CACHE_KEY);
-        return JsonHelper.ToJson(ApiResponse<object>.Ok(null, "Deleted"));
+            ClearCache();
+            return Ok(null, "Deleted");
+        }
+        catch (Exception ex)
+        {
+            return Fail(ex.Message);
+        }
     }
 
-    // ================= REORDER =================
+    /* ===================== REORDER ===================== */
+
     [WebMethod]
-    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public string UpdateOrder(int testimonialId, int order)
     {
-        using (SqlConnection con = new SqlConnection(connStr))
-        using (SqlCommand cmd = new SqlCommand(
-            "UPDATE CMS_Testimonials SET DisplayOrder=@O WHERE TestimonialId=@ID", con))
+        try
         {
-            cmd.Parameters.AddWithValue("@ID", testimonialId);
-            cmd.Parameters.AddWithValue("@O", order);
-            con.Open();
-            cmd.ExecuteNonQuery();
-        }
+            using (SqlConnection con = new SqlConnection(connStr))
+            using (SqlCommand cmd = new SqlCommand(
+                "UPDATE CMS_Testimonials SET DisplayOrder=@O WHERE TestimonialId=@Id", con))
+            {
+                cmd.Parameters.AddWithValue("@Id", testimonialId);
+                cmd.Parameters.AddWithValue("@O", order);
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
 
-        cache.Remove(CACHE_KEY);
-        return JsonHelper.ToJson(ApiResponse<object>.Ok(null));
+            ClearCache();
+            return Ok(null);
+        }
+        catch (Exception ex)
+        {
+            return Fail(ex.Message);
+        }
     }
 }

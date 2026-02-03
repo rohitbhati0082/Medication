@@ -1,4 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="Team.aspx.cs" Inherits="Mediation" %>
+<%@ Register Src="TeamsView.ascx"
+    TagPrefix="uc"
+    TagName="TeamsView" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
   
@@ -30,43 +33,8 @@
              <!--Link Btn-->
              
          </div>
-         <div class="wrapper-box">
-             <div class="row">
-                 <!-- Team Blokc One -->
-                 <div class="col-lg-4 team-block-one">
-                     <div class="inner-box wow fadeInDown" data-wow-delay="200ms">
-                         <div class="image"><a href="#"><img src="images/resource/team-1.jpg" alt=""></a></div>
-                         <div class="lower-content">
-                             <h4> <a href="#">INSPIRATION : LATE JUSTICE K. P. BHANDARI</a></h4>
-                             <div class="designation">(1930-2014)</div>
-                         </div>
-                         
-                     </div>
-                 </div>
-                 <!-- Team Blokc One -->
-                 <div class="col-lg-4 team-block-one">
-                     <div class="inner-box wow fadeInUp" data-wow-delay="400ms">
-                         <div class="image"><a href="#"><img src="images/resource/team-2.jpg" alt=""></a></div>
-                         <div class="lower-content">
-                             <h4> <a href="#">MRS. VARUNA BHANDARI GUGNANI</a></h4>
-                             <div class="designation">Proprietor</div>
-                         </div>
-                         
-                     </div>
-                 </div>
-                 <!-- Team Blokc One -->
-                 <div class="col-lg-4 team-block-one">
-                     <div class="inner-box wow fadeInDown" data-wow-delay="200ms">
-                         <div class="image"><a href="#"><img src="images/resource/team-3.jpg" alt=""></a></div>
-                         <div class="lower-content">
-                             <h4> <a href="#">Ms. Nandini Gore</a></h4>
-                             <div class="designation">Team Member</div>
-                         </div>
-                         
-                     </div>
-                 </div>
-             </div>                
-         </div>
+         <uc:TeamsView runat="server" />
+
      </div>
  </section>
 

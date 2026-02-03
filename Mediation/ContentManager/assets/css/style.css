@@ -25670,7 +25670,7 @@ dl li {
   -webkit-align-items: center;
   align-items: center;
   white-space: nowrap;
-  padding: 1.125rem 0 1.125rem 0;
+  padding: 1rem 0 0.25rem 0;
   color: #3e4b5b;
   -webkit-transition-duration: 0.45s;
   -moz-transition-duration: 0.45s;

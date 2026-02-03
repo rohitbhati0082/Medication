@@ -99,7 +99,7 @@
     <a class="nav-link" data-bs-toggle="collapse" href="#ui-service" aria-expanded="false" aria-controls="ui-service">
         <span class="menu-title">Service Page</span>
         <i class="menu-arrow"></i>
-        <i class="mdi mdi-crosshairs-gps menu-icon"></i>
+        <i class="mdi mdi-scale-balance menu-icon"></i>
     </a>
     <div class="collapse" id="ui-service">
         <ul class="nav flex-column sub-menu">
@@ -112,6 +112,45 @@
         </ul>
     </div>
 </li>
+                        <li class="nav-item">
+    <a class="nav-link" href="Testimonials.aspx">
+        <span class="menu-title">Testimonials</span>
+        <i class="mdi mdi-message-draw menu-icon"></i>
+    </a>
+</li>
+                                                <li class="nav-item">
+    <a class="nav-link" href="Teams.aspx">
+        <span class="menu-title">Teams</span>
+        <i class="mdi mdi-account-group menu-icon"></i>
+    </a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" data-bs-toggle="collapse" href="#ui-event" aria-expanded="false" aria-controls="ui-event">
+        <span class="menu-title">Event Page</span>
+        <i class="menu-arrow"></i>
+        <i class="mdi mdi-view-gallery menu-icon"></i>
+    </a>
+    <div class="collapse" id="ui-event">
+        <ul class="nav flex-column sub-menu">
+            <li class="nav-item">
+                <a class="nav-link" href="NationalEvent.aspx">National</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="IntNationalEvent.aspx">International</a>
+            </li>
+             <li class="nav-item">
+     <a class="nav-link" href="PhotosEvent.aspx">Photo Gallery</a>
+ </li>
+                         <li class="nav-item">
+    <a class="nav-link" href="VideosEvent.aspx">Video Gallery</a>
+</li>
+                        <li class="nav-item">
+    <a class="nav-link" href="Certificates.aspx">Certifications/pdf</a>
+</li>
+        </ul>
+    </div>
+</li>
+
 
                     </ul>
                 </nav>
