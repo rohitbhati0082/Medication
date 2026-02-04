@@ -81,7 +81,7 @@ public class CoreService : WebService
                     OrganizerName, OrganizerPhone, OrganizerEmail
                 FROM CMS_EventMedia
                 WHERE Category = @Category AND IsActive = 1
-                ORDER BY CreatedOn DESC", con))
+                ORDER BY Id ASC", con))
             {
                 cmd.Parameters.AddWithValue("@Category", category);
                 con.Open();

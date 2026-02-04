@@ -57,38 +57,10 @@
             <div class="text-center mb-60"><span class="border-shape"></span></div>
 
             <!-- Tab panes -->
-            <div class="tab-content">
-               
-                <div class="tab-pane fadeInUp animated active" id="tab-two" role="tabpanel" aria-labelledby="tab-two">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="image mb-30"><img src="images/background/national1.jpeg" alt=""></div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="content">
-                                <h2>Event description</h2>
-                                <div class="text">
-                                    <p>How all this mistaken idea of denouncing pleasure and praising pain was born <br> and I will give you a complete account of the system expound the actually <br>teachings of the great explorer of the truth pursues.</p>
-                                    <p>Denouncing pleasure and praising pain was born  and I will give you a complete <br>account of the system expound.</p>
-                                </div>
-                                <div class="info-box">
-                                    <h5>Organizer</h5>
-                                    <a href="#">Ollie M Reuben</a>
-                                </div>
-                                <div class="info-box">
-                                    <h5>Phone</h5>
-                                    <a href="tel:+2114567890">+211 456 7890</a>
-                                </div>
-                                <div class="info-box">
-                                    <h5>Email</h5>
-                                    <a href="mailto:reuben@goodsoul.com">reuben@goodsoul.com</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-            </div>
+          <div class="tab-content" id="eventContainer">
+    <!-- Dynamic events will be loaded here by loadEvents() -->
+</div>
+
         </div>
     </div>
 </section>
@@ -211,8 +183,66 @@ ValidationExpression="[0-9]{10}"></asp:RegularExpressionValidator>
 
  <!-- Blog Section -->
  
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
  <!-- Client section -->
- 
+ <script>
+     function loadEvents() {
+         $.ajax({
+             type: "POST",
+             url: "/services/CoreService.asmx/GetEventMediaByCategory",
+             contentType: "application/json; charset=utf-8",
+             dataType: "json",
+             data: JSON.stringify({ category: "NationalEvent" }),
+             success: function (res) {
+                 const api = JSON.parse(res.d);
+                 let html = "";
+
+                 api.data.forEach(e => {
+                     // Media HTML
+                     const mediaHtml = e.mediaType === 'IMAGE'
+                         ? `<img src="${e.imagePath}" alt="${e.title}" class="mb-30">`
+                         : `<iframe src="${e.youtubeUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+
+                     html += `
+<div class="tab-pane fadeInUp animated active">
+    <div class="row">
+        <!-- LEFT : MEDIA -->
+        <div class="col-lg-6">
+            <div class="image">
+                ${mediaHtml}
+            </div>
+        </div>
+
+        <!-- RIGHT : CONTENT -->
+        <div class="col-lg-6">
+            <div class="content">
+                <h2>${e.title}</h2>
+                <div class="text">
+                    ${e.description || ''}
+                </div>
+                ${e.organizerName ? `<div class="info-box"><h5>Organizer</h5><a href="#">${e.organizerName}</a></div>` : ''}
+                ${e.organizerPhone ? `<div class="info-box"><h5>Phone</h5><a href="tel:${e.organizerPhone}">${e.organizerPhone}</a></div>` : ''}
+                ${e.organizerEmail ? `<div class="info-box"><h5>Email</h5><a href="mailto:${e.organizerEmail}">${e.organizerEmail}</a></div>` : ''}
+            </div>
+        </div>
+    </div>
+</div>`;
+                 });
+
+                 $('#eventContainer').html(html || '<p class="text-muted">No events found.</p>');
+             },
+             error: function (err) {
+                 console.error(err);
+                 $('#eventContainer').html('<p class="text-danger">Failed to load events.</p>');
+             }
+         });
+     }
+
+     // Call on page ready
+     $(document).ready(function () {
+         loadEvents();
+     });
+
+ </script>
 </asp:Content>
 

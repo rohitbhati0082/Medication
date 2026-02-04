@@ -60,36 +60,11 @@
             <div class="text-center mb-60" style="margin-bottom: 10px !important;"><span class="border-shape"></span></div>
 
             <!-- Tab panes -->
-            <div class="tab-content">
-                
-                <div class="tab-pane fadeInUp animated active" id="tab-two" role="tabpanel" aria-labelledby="tab-two">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="image mb-30"><iframe title="United by Community Mediation: an international perspective (recorded March 16, 2023)" width="500" height="400" src="https://www.youtube.com/embed/QZ7Kc34brL4?start=1135&amp;feature=oembed&amp;wmode=opaque&amp;rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe></div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="content">
-                                <h2>Event description</h2>
-                                <div class="text">
-                                    <p style="color:black;">During California Mediation Week, organizations, mediators, and community members come together to raise awareness about mediation and its potential to resolve disputes in a peaceful and collaborative manner. The week typically includes workshops, seminars, panel discussions, and public outreach campaigns to educate the public about mediation and its benefits.</p>
-                                    <p style="color:black;">The objectives of California Mediation Week include:</p>
-                                </div>
-                                <div class="info-box">
-                                                         <ul class="responsive-list">
-    <li><b>> &nbsp;Promoting Mediation:</b> The event aims to highlight the value of mediation as an alternative to litigation and other adversarial methods of conflict resolution. It seeks to educate the public about the benefits of mediation, such as cost-effectiveness, efficiency, confidentiality, and preserving relationships.</li>
-    <li><b>> &nbsp;Community Engagement:</b> California Mediation Week encourages community engagement by bringing together mediators, community organizations, and individuals to participate in activities that promote dialogue, understanding, and peaceful resolution of conflicts.</li>
-    <li><b>> &nbsp;Professional Development:</b> The event provides opportunities for mediators and dispute resolution professionals to enhance their skills, exchange knowledge and experiences, and learn about the latest developments in the field of mediation.</li>
-    <li><b>> &nbsp;Collaboration:</b> California Mediation Week fosters collaboration among mediators, organizations, and stakeholders involved in conflict resolution. It promotes networking, partnerships, and shared efforts to advance the practice and understanding of mediation.</li>
-   </ul>
-                                </div>
-                               
-                               
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-            </div>
+           
+                <!-- Tab panes -->
+<div class="tab-content" id="internationalEventContainer">
+    <!-- Dynamic events will be injected here -->
+</div>
         </div>
     </div>
 </section>
@@ -211,9 +186,71 @@ ValidationExpression="[0-9]{10}"></asp:RegularExpressionValidator>
  </section>
 
  <!-- Blog Section -->
- 
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
  <!-- Client section -->
+    <script>
+        function loadInternationalEvents() {
+            $.ajax({
+                type: "POST",
+                url: "/services/CoreService.asmx/GetEventMediaByCategory",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify({ category: "InternationalEvent" }),
+                success: function (res) {
+                    const api = JSON.parse(res.d);
+                    let html = "";
+
+                    api.data.forEach(e => {
+                        // Media HTML
+                        const mediaHtml = e.mediaType === 'IMAGE'
+                            ? `<img src="${e.imagePath}" alt="${e.title}" class="mb-30">`
+                            : `<iframe title="${e.title}" width="500" height="400" src="${e.youtubeUrl}" 
+                        frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+                       </iframe>`;
+
+                        // Description + Organizer Info
+                        html += `
+<div class="tab-pane fadeInUp animated active">
+    <div class="row">
+        <!-- LEFT: MEDIA -->
+        <div class="col-lg-6">
+            <div class="image mb-30">
+                ${mediaHtml}
+            </div>
+        </div>
+
+        <!-- RIGHT: CONTENT -->
+        <div class="col-lg-6">
+            <div class="content">
+                <h2>${e.title}</h2>
+                <div class="text">
+                    ${e.description || ''}
+                </div>
+                ${e.organizerName ? `<div class="info-box"><b>Organizer:</b> ${e.organizerName}</div>` : ''}
+                ${e.organizerPhone ? `<div class="info-box"><b>Phone:</b> ${e.organizerPhone}</div>` : ''}
+                ${e.organizerEmail ? `<div class="info-box"><b>Email:</b> ${e.organizerEmail}</div>` : ''}
+            </div>
+        </div>
+    </div>
+</div>`;
+                    });
+
+                    $('#internationalEventContainer').html(html || '<p class="text-muted">No international events found.</p>');
+                },
+                error: function (err) {
+                    console.error(err);
+                    $('#internationalEventContainer').html('<p class="text-danger">Failed to load international events.</p>');
+                }
+            });
+        }
+
+        // Load on page ready
+        $(document).ready(function () {
+            loadInternationalEvents();
+        });
+
+    </script>
  
 </asp:Content>
 

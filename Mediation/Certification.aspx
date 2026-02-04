@@ -32,48 +32,8 @@
     <h1>Certification</h1>
 </div>
         <div class="row">
-            <div class="col-lg-4 col-md-6 gallery-block-three">
-                <div class="inner-box">
-                    <div class="image">
-                        <img src="images/resource/cert1.png" alt="">
-                        <div class="overlay">
-                            <a data-fancybox="example gallery" href="images/resource/cert1.png" class="zoom-btn"><span class="flaticon-more-1"></span></a>
-                        </div>
-                    </div>
-                    <div class="caption-title">
-                        <h5 style="color:white;">Certification Name</h5>
-                        
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 gallery-block-three">
-                <div class="inner-box">
-                    <div class="image">
-    <img src="images/resource/cert1.png" alt="">
-    <div class="overlay">
-        <a data-fancybox="example gallery" href="images/resource/cert1.png" class="zoom-btn"><span class="flaticon-more-1"></span></a>
-    </div>
+            <div class="row" id="certContainer">
 </div>
-                   <div class="caption-title">
-     <h5 style="color:white;">Certification Name</h5>
-     
- </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 gallery-block-three">
-                <div class="inner-box">
-                    <div class="image">
-    <img src="images/resource/cert1.png" alt="">
-    <div class="overlay">
-        <a data-fancybox="example gallery" href="images/resource/cert1.png" class="zoom-btn"><span class="flaticon-more-1"></span></a>
-    </div>
-</div>
-                    <div class="caption-title">
-     <h5 style="color:white;">Certification Name</h5>
-     
- </div>
-                </div>
-            </div>
         </div>
     </div>
 </section>
@@ -86,57 +46,9 @@
     <h1>PDF</h1>
 </div>
         <div class="row">
-            <div class="col-lg-4 col-md-6">
-                <div class="inner-box">
-                    <div class="image">
-                     <iframe 
-                src="images/resource/cer1.pdf#toolbar=0&navpanes=0&scrollbar=0" width="370" height="370">
-            </iframe>
-<br />
-
-            <div class="link-btn wow fadeInLeft" data-wow-delay="500ms"><a href="images/resource/cer1.pdf#toolbar=0&navpanes=0&scrollbar=0" target="_blank" class="theme-btn btn-style-two"><i class="flaticon-next"></i><span>View PDF</span></a></div>            
- 
-                    </div>
-                    <div class="caption-title">
-                        <h5 style="color:white;">Certification Name</h5>
-                        
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="inner-box">
-                                        <div class="image">
-                     <iframe 
-                src="images/resource/cer1.pdf#toolbar=0&navpanes=0&scrollbar=0" width="370" height="370">
-            </iframe>
-<br />
-
-            <div class="link-btn wow fadeInLeft" data-wow-delay="500ms"><a href="images/resource/cer1.pdf#toolbar=0&navpanes=0&scrollbar=0" target="_blank" class="theme-btn btn-style-two"><i class="flaticon-next"></i><span>View PDF</span></a></div>            
- 
-                    </div>
-                   <div class="caption-title">
-     <h5 style="color:white;">Certification Name</h5>
-     
- </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="inner-box">
-                                        <div class="image">
-                     <iframe 
-                src="images/resource/cer1.pdf#toolbar=0&navpanes=0&scrollbar=0" width="370" height="370">
-            </iframe>
-<br />
-
-       <center>    <div class="link-btn wow fadeInLeft" data-wow-delay="500ms"><a href="images/resource/cer1.pdf#toolbar=0&navpanes=0&scrollbar=0" target="_blank" class="theme-btn btn-style-two"><i class="flaticon-next"></i><span>View PDF</span></a></div>            
- </center>
-                    </div>
-                    <div class="caption-title">
-     <h5 style="color:white;">Certification Name</h5>
-     
- </div>
-                </div>
-            </div>
+            <div class="row" id="pdfContainer">
+    <!-- AJAX will load PDFs here -->
+</div>
         </div>
     </div>
 </section>
@@ -258,7 +170,76 @@ ValidationExpression="[0-9]{10}"></asp:RegularExpressionValidator>
  <!-- Blog Section -->
  
 
- <!-- Client section -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function loadMedia() {
+        $.ajax({
+            type: "POST",
+            url: "/services/CoreService.asmx/GetEventMediaByCategory",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify({ category: "Certificate" }), // fetch all; server can return both types
+            success: function (res) {
+                const api = JSON.parse(res.d);
+                let certHtml = "";
+                let pdfHtml = "";
+
+                api.data.forEach(item => {
+                    if (item.mediaType === "Certificate") {
+                        certHtml += `
+<div class="col-lg-4 col-md-6 gallery-block-three">
+    <div class="inner-box">
+        <div class="image">
+            <img src="${item.imagePath}" alt="${item.title}">
+            <div class="overlay">
+                <a data-fancybox="example gallery" href="${item.imagePath}" class="zoom-btn">
+                    <span class="flaticon-more-1"></span>
+                </a>
+            </div>
+        </div>
+        <div class="caption-title">
+            <h5 style="color:white;">${item.title}</h5>
+        </div>
+    </div>
+</div>`;
+                    } else if (item.mediaType === "PDF") {
+                        pdfHtml += `
+<div class="col-lg-4 col-md-6">
+    <div class="inner-box">
+        <div class="image">
+            <iframe src="${item.pdfPath}#toolbar=0&navpanes=0&scrollbar=0" width="370" height="370"></iframe>
+            <br/>
+            <div class="link-btn wow fadeInLeft" data-wow-delay="500ms">
+                <a href="${item.pdfPath}#toolbar=0&navpanes=0&scrollbar=0" target="_blank" class="theme-btn btn-style-two">
+                    <i class="flaticon-next"></i><span>View PDF</span>
+                </a>
+            </div>
+        </div>
+        <div class="caption-title">
+            <h5 style="color:white;">${item.title}</h5>
+        </div>
+    </div>
+</div>`;
+                    }
+                });
+
+                $('#certContainer').html(certHtml || '<p class="text-muted">No certificates found.</p>');
+                $('#pdfContainer').html(pdfHtml || '<p class="text-muted">No PDFs found.</p>');
+            },
+            error: function (err) {
+                console.error(err);
+                $('#certContainer').html('<p class="text-danger">Failed to load certificates.</p>');
+                $('#pdfContainer').html('<p class="text-danger">Failed to load PDFs.</p>');
+            }
+        });
+    }
+
+    // Call on page ready
+    $(document).ready(function () {
+        loadMedia();
+    });
+</script>
+
  
 </asp:Content>
 

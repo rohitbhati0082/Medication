@@ -27,97 +27,16 @@
     <section class="gallery-section-six">
     <div class="sortable-masonry">
 
-        <div class="auto-container">
-            <div class="items-container row">
+        
                 <!-- Portfolio Block Two -->
-                <div class="col-lg-4 col-md-6 gallery-block-three">
-                    <div class="inner-box">
-                        <div class="image">
-                            <img src="images/portfolio/gallery-15.jpeg" alt="">
-                            <div class="overlay">
-                                <a data-fancybox="example gallery" href="images/portfolio/gallery-15.jpeg" class="zoom-btn"><span class="flaticon-more-1"></span></a>
-                            </div>
-                        </div>
-                        <div class="caption-title">
-                           
-                            <h4>Image Tittle</h4>
-                        </div>
-                    </div>
-                </div>
-                <!-- Portfolio Block Two -->
-                <div class="col-lg-8 col-md-12 gallery-block-three">
-                    <div class="inner-box">
-                        <div class="image">
-                            <img src="images/portfolio/gallery-17.jpeg" alt="">
-                            <div class="overlay">
-                                <a data-fancybox="example gallery" href="images/portfolio/gallery-17.jpeg" class="zoom-btn"><span class="flaticon-more-1"></span></a>
-                            </div>
-                        </div>
-                        <div class="caption-title">
-                            <h4>Image Tittle</h4>
-                        </div>
-                    </div>
-                </div>
-                <!-- Portfolio Block Two -->
-                <div class="col-lg-4 col-md-6 gallery-block-three">
-                    <div class="inner-box">
-                        <div class="image">
-                            <img src="images/portfolio/gallery-18.jpeg" alt="">
-                            <div class="overlay">
-                                <a data-fancybox="example gallery" href="images/portfolio/gallery-18.jpeg" class="zoom-btn"><span class="flaticon-more-1"></span></a>
-                            </div>
-                        </div>
-                        <div class="caption-title">
-                            <h4>Image Tittle</h4>
-                        </div>
-                    </div>
-                </div>
-                <!-- Portfolio Block Two -->
-                <div class="col-lg-4 col-md-6 gallery-block-three">
-                    <div class="inner-box">
-                        <div class="image">
-                            <img src="images/portfolio/gallery-20.jpeg" alt="">
-                            <div class="overlay">
-                                <a data-fancybox="example gallery" href="images/portfolio/gallery-20.jpeg" class="zoom-btn"><span class="flaticon-more-1"></span></a>
-                            </div>
-                        </div>
-                        <div class="caption-title">
-                            <h4>Image Tittle</h4>
-                        </div>
-                    </div>
-                </div>
-                <!-- Portfolio Block Two -->
-                <div class="col-lg-4 col-md-6 gallery-block-three">
-                    <div class="inner-box">
-                        <div class="image">
-                            <img src="images/portfolio/gallery-25.jpeg" alt="">
-                            <div class="overlay">
-                                <a data-fancybox="example gallery" href="images/portfolio/gallery-25.jpeg" class="zoom-btn"><span class="flaticon-more-1"></span></a>
-                            </div>
-                        </div>
-                        <div class="caption-title">
-                            <h4>Image Tittle</h4>
-                        </div>
-                    </div>
-                </div>
-                <!-- Portfolio Block Two -->
-                <div class="col-lg-8 col-md-6 gallery-block-three">
-                    <div class="inner-box">
-                        <div class="image">
-                            <img src="images/portfolio/gallery-26.jpeg" alt="">
-                            <div class="overlay">
-                                <a data-fancybox="example gallery" href="images/portfolio/gallery-26.jpeg" class="zoom-btn"><span class="flaticon-more-1"></span></a>
-                            </div>
-                        </div>
-                        <div class="caption-title">
-                            <h4>Image Tittle</h4>
-                        </div>
-                    </div>
-                </div>
+                <div class="auto-container">
+    <div class="row" id="photoContainer">
+        <!-- Photos will be loaded here dynamically -->
+    </div>
+</div>
+
                 <!-- End block -->
             </div>
-        </div>
-    </div>
 </section>
      
         
@@ -238,8 +157,54 @@ ValidationExpression="[0-9]{10}"></asp:RegularExpressionValidator>
 
  <!-- Blog Section -->
  
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
  <!-- Client section -->
+    <script>
+        function loadPhotos() {
+            $.ajax({
+                type: "POST",
+                url: "/services/CoreService.asmx/GetEventMediaByCategory",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify({ category: "PhotoEvent" }),
+                success: function (res) {
+                    const api = JSON.parse(res.d);
+                    let html = "";
+
+                    api.data.forEach(p => {
+                        html += `
+<div class="col-lg-4 col-md-6 gallery-block-three">
+    <div class="inner-box">
+        <div class="image">
+            <img src="${p.imagePath}" alt="${p.title}">
+            <div class="overlay">
+                <a data-fancybox="example gallery" href="${p.imagePath}" class="zoom-btn">
+                    <span class="flaticon-more-1"></span>
+                </a>
+            </div>
+        </div>
+        <div class="caption-title">
+            <h4>${p.title}</h4>
+        </div>
+    </div>
+</div>`;
+                    });
+
+                    $('#photoContainer').html(html || '<p class="text-muted">No photos found.</p>');
+                },
+                error: function (err) {
+                    console.error(err);
+                    $('#photoContainer').html('<p class="text-danger">Failed to load photos.</p>');
+                }
+            });
+        }
+
+        // Load photos on page ready
+        $(document).ready(function () {
+            loadPhotos();
+        });
+
+    </script>
  
 </asp:Content>
 

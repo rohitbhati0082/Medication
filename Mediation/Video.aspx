@@ -28,76 +28,14 @@
     <div class="sortable-masonry">
 
         <div class="auto-container">
-            <div class="items-container row">
-                <!-- Portfolio Block Two -->
-                <div class="col-lg-4 col-md-6">
-                    <div class="inner-box">
-                        <div class="image">
-                          <iframe title="United by Community Mediation: an international perspective (recorded March 16, 2023)"  src="https://www.youtube.com/embed/QZ7Kc34brL4?start=1135&amp;feature=oembed&amp;wmode=opaque&amp;rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
-                          
-                        </div>
-                       
-                    </div>
-                </div>
-                <!-- Portfolio Block Two -->
-                <div class="col-lg-4 col-md-6">
-                    <div class="inner-box">
-                        <div class="image">
-                              <iframe title="United by Community Mediation: an international perspective (recorded March 16, 2023)"  src="https://www.youtube.com/embed/QZ7Kc34brL4?start=1135&amp;feature=oembed&amp;wmode=opaque&amp;rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
-                         
-                           
-                        </div>
-                       
-                    </div>
-                </div>
-                <!-- Portfolio Block Two -->
-                <div class="col-lg-4 col-md-6">
-                    <div class="inner-box">
-                        <div class="image">
-                              <iframe title="United by Community Mediation: an international perspective (recorded March 16, 2023)"  src="https://www.youtube.com/embed/QZ7Kc34brL4?start=1135&amp;feature=oembed&amp;wmode=opaque&amp;rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
-                         
-                          
-                        </div>
-                       
-                    </div>
-                </div>
-                <!-- Portfolio Block Two -->
-                <div class="col-lg-4 col-md-6">
-                    <div class="inner-box">
-                        <div class="image">
-                             <iframe title="United by Community Mediation: an international perspective (recorded March 16, 2023)"  src="https://www.youtube.com/embed/QZ7Kc34brL4?start=1135&amp;feature=oembed&amp;wmode=opaque&amp;rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
-                         
-                          
-                        </div>
-                     
-                    </div>
-                </div>
-                <!-- Portfolio Block Two -->
-                <div class="col-lg-4 col-md-6">
-                    <div class="inner-box">
-                        <div class="image">
-                             <iframe title="United by Community Mediation: an international perspective (recorded March 16, 2023)"  src="https://www.youtube.com/embed/QZ7Kc34brL4?start=1135&amp;feature=oembed&amp;wmode=opaque&amp;rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
-                         
-                         
-                        </div>
-                      
-                    </div>
-                </div>
-                <!-- Portfolio Block Two -->
-                <div class="col-lg-4 col-md-6">
-                    <div class="inner-box">
-                        <div class="image">
-                            <iframe title="United by Community Mediation: an international perspective (recorded March 16, 2023)"  src="https://www.youtube.com/embed/QZ7Kc34brL4?start=1135&amp;feature=oembed&amp;wmode=opaque&amp;rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
-                         
-                         
-                        </div>
-                      
-                    </div>
-                </div>
-                <!-- End block -->
-            </div>
-        </div>
+    <div class=" row" id="videoContainer">
+        <!-- Videos will be injected here dynamically -->
     </div>
+</div>
+
+             
+    </div>
+
 </section>
      
         
@@ -217,9 +155,51 @@ ValidationExpression="[0-9]{10}"></asp:RegularExpressionValidator>
  </section>
 
  <!-- Blog Section -->
- 
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
 
  <!-- Client section -->
+    function loadVideos() {
+    $.ajax({
+        type: "POST",
+        url: "/services/CoreService.asmx/GetEventMediaByCategory",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        data: JSON.stringify({ category: "VideoEvent" }),
+        success: function (res) {
+            const api = JSON.parse(res.d);
+            let html = "";
+
+            api.data.forEach(v => {
+                html += `
+<div class="col-lg-4 col-md-6">
+    <div class="inner-box">
+        <div class="image">
+            <iframe title="${v.title}" 
+                    src="${v.youtubeUrl}" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+</div>`;
+            });
+
+            $('#videoContainer').html(html || '<p class="text-muted">No videos found.</p>');
+        },
+        error: function(err) {
+            console.error(err);
+            $('#videoContainer').html('<p class="text-danger">Failed to load videos.</p>');
+        }
+    });
+}
+
+// Call on page ready
+$(document).ready(function() {
+    loadVideos();
+});
+</script>
  
 </asp:Content>
 
