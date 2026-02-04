@@ -5,10 +5,10 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class ContentManager_Certificates : System.Web.UI.Page
+public partial class ContentManager_Certificates : BasePage
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        RequireRole("Admin");
     }
 }
