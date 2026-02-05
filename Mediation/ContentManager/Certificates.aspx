@@ -91,7 +91,7 @@
 
 <div class="d-flex justify-content-between mb-3">
     <h4>Certificates & PDFs</h4>
-    <button type="button" class="btn btn-primary" id="btnAddCert">Add Media</button>
+    <button type="button" class="btn btn-primary" id="btnAddCert">Add Certificates & PDFs</button>
 </div>
 
 <h5 class="mb-3">Certificates</h5>
